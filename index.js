@@ -1,6 +1,8 @@
-const scrapper = require('./scrapper');
+const server = require('./server');
 
-scrapper.scrape();
+server.startServer();
+
+
 
 
 
