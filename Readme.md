@@ -12,7 +12,6 @@ This repository contains the backend for the web scraper project, designed to ga
 - **Express.js Framework:** Utilizes Express.js for creating a robust and scalable server.
 - **Web Scraping:** Incorporates web scraping techniques to collect data from apartment rental websites.
 - **API Endpoints:** Provides endpoints for the frontend UI to interact with and retrieve scraped data.
-- **Customizable Scraping Logic:** Allows for customization of web scraping logic based on specific requirements.
 
 ## Getting Started
 
