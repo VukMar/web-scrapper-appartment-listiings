@@ -2,6 +2,7 @@ const cheerio = require('cheerio');
 const { json } = require('express');
 const { Console } = require('console');
 const axios = require('axios');
+const path = require('path');
 
 class Apartment
 {
@@ -61,6 +62,11 @@ const getPageData = async (pageUrl) => {
 const writeListToJSON = async (apartmentLinks) =>
 {
     const fs = require('fs');
+    const directoryPath = path.join( __dirname, 'ApartmentLists');
+    
+    if (!fs.existsSync(directoryPath)) {
+        fs.mkdirSync(directoryPath);
+    }
     
     //Create list
     let ApartmentList = [];
@@ -70,9 +76,11 @@ const writeListToJSON = async (apartmentLinks) =>
         const price = await getApartmentInfo(apartmentLinks[i]);
         ApartmentList.push(new Apartment(apartmentLinks[i],price));
     }
-    
+
+    const fileNamePath = path.join(directoryPath, 'ApartmentList.json');
+
     //Write list to file
-    fs.writeFileSync('ApartmentLists/ApartmentList.json', JSON.stringify(ApartmentList));
+    fs.writeFileSync(fileNamePath, JSON.stringify(ApartmentList, null, 4));
 }
 
 const scrape = async () => {
@@ -88,11 +96,15 @@ const scrape = async () => {
     
     //Get page count
     const pageCount = await getPageCount(baseUrl);
+
+    console.log(pageCount);
+
+    const PagesToCheck = pageCount > 2? 2 : pageCount; 
     
     //Get apartment list
     let apartmentLinks = [];
-    console.log(`Pages to check: ${pageCount}`);
-    for (let i = 0; i < pageCount; i++) {
+    console.log(`Pages to check: ${PagesToCheck}`);
+    for (let i = 0; i < PagesToCheck; i++) {
         console.log(`Checking page: ${i+1}`);
         const pageUrl = pageUrlTemplate.replace('%d', i * 20);
         const pageData = await getPageData(pageUrl);
@@ -109,5 +121,6 @@ const scrape = async () => {
     console.log(`Time needed: ${(end - start)/1000}seconds`);
 };
 
+//Export function for use by the server
 module.exports = { scrape };
 
