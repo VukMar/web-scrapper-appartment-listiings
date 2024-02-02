@@ -27,7 +27,8 @@ const getApartmentInfo = async (ApartmentLink) =>
 }
 
 
-const getPageCount = async (baseUrl) => {
+const getPageCount = async () => {
+    const baseUrl = 'https://www.nadjidom.com/sr/nekretnine/izdavanje/stanovi+Novi+Sad';
     try {
         const response = await axios.get(baseUrl); // Send an HTTP GET request to the specified page URL using Axios
         const $ = cheerio.load(response.data); // Load the response data into Cheerio to parse it as HTML
@@ -83,7 +84,7 @@ const writeListToJSON = async (apartmentLinks) =>
     fs.writeFileSync(fileNamePath, JSON.stringify(ApartmentList, null, 4));
 }
 
-const scrape = async () => {
+const scrape = async (pageCount) => {
     //Start
     console.log('Scraping...');
     
@@ -94,17 +95,10 @@ const scrape = async () => {
     const baseUrl = 'https://www.nadjidom.com/sr/nekretnine/izdavanje/stanovi+Novi+Sad';
     const pageUrlTemplate = `${baseUrl}&offset=%d`;
     
-    //Get page count
-    const pageCount = await getPageCount(baseUrl);
-
-    console.log(pageCount);
-
-    const PagesToCheck = pageCount > 2? 2 : pageCount; 
-    
     //Get apartment list
     let apartmentLinks = [];
-    console.log(`Pages to check: ${PagesToCheck}`);
-    for (let i = 0; i < PagesToCheck; i++) {
+    console.log(`Pages to check: ${pageCount}`);
+    for (let i = 0; i < pageCount; i++) {
         console.log(`Checking page: ${i+1}`);
         const pageUrl = pageUrlTemplate.replace('%d', i * 20);
         const pageData = await getPageData(pageUrl);
@@ -122,5 +116,5 @@ const scrape = async () => {
 };
 
 //Export function for use by the server
-module.exports = { scrape };
+module.exports = { scrape, getPageCount };
 

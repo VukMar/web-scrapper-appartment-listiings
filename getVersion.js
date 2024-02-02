@@ -1,8 +1,8 @@
 const fs = require('fs').promises;
 const path = require('path');
 
-const fetchApartments = async () => {
-  const filePath = path.join(__dirname, 'ApartmentLists', 'ApartmentList.json');
+const getVersion = async () => {
+  const filePath = path.join(__dirname, 'version.json');
 
   try {
     // Read the content of the JSON file
@@ -19,4 +19,4 @@ const fetchApartments = async () => {
 };
 
 //Export function
-module.exports = { fetchApartments };
+module.exports = { getVersion };
