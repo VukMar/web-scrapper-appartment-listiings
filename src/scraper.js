@@ -74,8 +74,16 @@ const writeListToJSON = async (apartmentLinks) =>
     for(let i = 0; i <  apartmentLinks.length; i++)
     {
         console.log(`Writing apartment ${i+1} of ${apartmentLinks.length}`);
+
         const price = await getApartmentInfo(apartmentLinks[i]);
-        ApartmentList.push(new Apartment(apartmentLinks[i],price));
+
+        if(isNaN(price)){
+            price = Number(price);
+        }
+
+        if(price > minPrice && price < maxPrice){
+            ApartmentList.push(new Apartment(apartmentLinks[i],price));
+        }
     }
 
     const fileNamePath = path.join(directoryPath, 'ApartmentList.json');
@@ -84,7 +92,7 @@ const writeListToJSON = async (apartmentLinks) =>
     fs.writeFileSync(fileNamePath, JSON.stringify(ApartmentList, null, 4));
 }
 
-const scrape = async (pageCount) => {
+const scrape = async (pageCount,minPrice,maxPrice) => {
     //Start
     console.log('Scraping...');
     
@@ -107,7 +115,7 @@ const scrape = async (pageCount) => {
 
     //Save apartment list to file
     console.log('Writing apartment list to file...');
-    const filesaveInfo = await writeListToJSON(apartmentLinks);
+    const filesaveInfo = await writeListToJSON(apartmentLinks,minPrice,maxPrice);
     console.log(`DONE!`);
 
     //Get end time point of duration count and calculate

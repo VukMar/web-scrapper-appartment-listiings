@@ -23,15 +23,15 @@ const startServer = () => {
     try {
         const POST = req.body;
 
-        pagesToScrape = POST.toScrape;
-
-        console.log(pagesToScrape);
+        let pagesToScrape = POST.pgeCount;
+        let minPrice = POST.priceMin;
+        let maxPrice = POST.priceMax;
     
         if (isNaN(pagesToScrape) || pagesToScrape <= 0) {
             return res.status(400).json({ success: false, message: 'Invalid input for pagesToScrape' });
         }
 
-        await scrape(pagesToScrape);
+        await scrape(pagesToScrape,minPrice,maxPrice);
     
         res.json({ success: true, message: 'Scraping completed successfully.' });
     } catch (error) {
