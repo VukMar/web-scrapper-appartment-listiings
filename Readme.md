@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains the backend for the web scraper project, designed to gather information about apartments available for rent. The backend is built with Node.js and utilizes web scraping techniques to fetch data from various websites. The gathered data is then made available for the frontend UI.
+This repository contains the backend for the web scraper project, designed to gather information about apartments available for rent. The backend is built with Node.js and utilizes web scraping techniques to fetch data from one website. The gathered data is then made available for the frontend UI.
 
 **Current Version: 0.6.7**
 
