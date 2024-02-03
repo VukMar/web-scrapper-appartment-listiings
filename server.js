@@ -3,10 +3,13 @@ const { scrape, getPageCount } = require('./scraper');
 const path = require('path');
 const { fetchApartments } = require('./getAptList');
 const cors = require('cors');
+const { getVersion } = require('./getVersion');
 
 const startServer = () => {
     const app = express();
     const port = process.env.PORT || 5000;
+
+    app.use(express.json());
 
     app.use(cors({
         origin: 'http://localhost:3000',
@@ -18,9 +21,13 @@ const startServer = () => {
 
     app.post('/scrape', async (req, res) => {
     try {
-        const { pagesToScrape } = req.body;
+        const POST = req.body;
+
+        pagesToScrape = POST.toScrape;
+
+        console.log(pagesToScrape);
     
-        if (!Number.isInteger(pagesToScrape) || pagesToScrape <= 0) {
+        if (isNaN(pagesToScrape) || pagesToScrape <= 0) {
             return res.status(400).json({ success: false, message: 'Invalid input for pagesToScrape' });
         }
 
@@ -35,13 +42,23 @@ const startServer = () => {
 
     app.get('/getPageCount' , async (req,res) => {
     try{
-        const aptList = await getPageCount();
-        res.json({ success: true, message: aptList });
+        const pageCount = await getPageCount();
+        res.json({ success: true, message: pageCount });
     }catch{
         console.error('Error during fetch:', error);
         res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
     })
+
+    app.get('/getVersion' , async (req,res) => {
+        try{
+            const version = await getVersion();
+            res.json({ success: true, message: version });
+        }catch{
+            console.error('Error during fetch:', error);
+            res.status(500).json({ success: false, message: 'Internal Server Error' });
+        }
+        })
 
     app.get('/getAptList', async (req, res) => {
     try{

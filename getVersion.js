@@ -9,9 +9,9 @@ const getVersion = async () => {
     const content = await fs.readFile(filePath, 'utf-8');
 
     // Parse the JSON content
-    const apartments = JSON.parse(content);
+    const version = JSON.parse(content);
 
-    return apartments;
+    return version;
   } catch (error) {
     console.error(`Error reading/parsing JSON file: ${error.message}`);
     return []; // Return an empty JSON array on fail
