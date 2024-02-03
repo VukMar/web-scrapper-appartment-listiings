@@ -35,7 +35,7 @@ The backend server is designed to work in conjunction with the frontend UI. Ensu
 ## API Endpoints
 
 - **GET /apartments:** Retrieve a list of apartments based on the specified criteria.
-- **GET /scrape:** Initiate the web scraping process with user-defined search parameters.
+- **POST /scrape:** Initiate the web scraping process with user-defined search parameters.
 
 ## Technologies Used
 
